@@ -1,7 +1,6 @@
 package com.cmu.action;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,16 +11,16 @@ import javax.servlet.http.HttpServletResponse;
 import com.cmu.service.RoomService;
 
 /**
- * Servlet implementation class GetRoomInfo
+ * Servlet implementation class JoinRoom
  */
-@WebServlet("/GetRoomInfo")
-public class GetRoomInfo extends HttpServlet {
+@WebServlet("/JoinRoom")
+public class JoinRoom extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public GetRoomInfo() {
+    public JoinRoom() {
         super();
     }
 
@@ -30,21 +29,13 @@ public class GetRoomInfo extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String roomID = request.getParameter("roomID");
-		int id = Integer.parseInt(roomID.trim());
-		if(!RoomService.isRoomExist(id)){
-			response.getOutputStream().write(new String("NotExist").getBytes());
-			return;
+		int id = Integer.parseInt(roomID);
+		if(RoomService.isRoomExist(id)){
+			RoomService.addPeopleToRoom("YiLi", id);
+			response.getOutputStream().write(new String("Success").getBytes());
+		}else{
+			response.getOutputStream().write(new String("NotSuccess").getBytes());
 		}
-		ArrayList<String> people = RoomService.getPeopleInRoom(id);
-		String result = "";
-		if(people.size() == 1){
-			result = people.get(0);
-		}else if(people.size() > 1){
-			for(String p: people){
-				result = result + p +",";
-			}
-		}
-		response.getOutputStream().write(result.getBytes());
 	}
 
 	/**

@@ -15,11 +15,15 @@ public class RoomService {
 			votingRooms.put(roomID, room);
 		}
 	}
+
+	public static boolean isRoomExist(int roomID){
+		if(!votingRooms.containsKey(roomID)){
+			return false;
+		}
+		return true;
+	}
 	
 	public static void addPeopleToRoom(String people, int roomID){
-		if(!votingRooms.containsKey(roomID)){
-			throw new IllegalStateException("The room doesn't exist");
-		}
 		try {
 			votingRooms.get(roomID).addPeople(people);
 		} catch (Exception e) {
@@ -28,16 +32,10 @@ public class RoomService {
 	}
 	
 	public static ArrayList<String> getPeopleInRoom(int roomID){
-		if(!votingRooms.containsKey(roomID)){
-			throw new IllegalStateException("The room doesn't exist");
-		}
 		return votingRooms.get(roomID).getPeople();
 	}
 	
 	public static void closeRoom(int roomID){
-		if(!votingRooms.containsKey(roomID)){
-			throw new IllegalStateException("The room doesn't exist");
-		}
 		votingRooms.remove(roomID);
 	}
 }
