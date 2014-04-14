@@ -1,5 +1,14 @@
 package com.cmu.action;
 
+import java.io.IOException;
+import java.util.ArrayList;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import com.cmu.service.RoomService;
 
 /**
@@ -8,7 +17,7 @@ import com.cmu.service.RoomService;
 @WebServlet("/GetRoomInfo")
 public class GetRoomInfo extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static final long servialUID = 2L;
+	private static final long servialUID = 3L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
