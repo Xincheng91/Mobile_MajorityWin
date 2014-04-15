@@ -17,7 +17,6 @@ import com.cmu.service.RoomService;
 @WebServlet("/GetRoomInfo")
 public class GetRoomInfo extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static final long servialUID = 3L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -33,13 +32,12 @@ public class GetRoomInfo extends HttpServlet {
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		String roomID = request.getParameter("roomID");
-		int id = Integer.parseInt(roomID.trim());
-		if (!RoomService.isRoomExist(id)) {
+		if (!RoomService.isRoomExist(roomID)) {
 			response.getOutputStream().write(new String("NotExist").getBytes());
 			return;
 		}
-		ArrayList<String> people = RoomService.getPeopleInRoom(id);
-		String result = "";
+		ArrayList<String> people = RoomService.getPeopleInRoom(roomID);
+		String result = new String();
 		if (people.size() == 1) {
 			result = people.get(0);
 		} else if (people.size() > 1) {

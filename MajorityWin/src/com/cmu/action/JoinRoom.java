@@ -31,9 +31,9 @@ public class JoinRoom extends HttpServlet {
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		String roomID = request.getParameter("roomID");
-		int id = Integer.parseInt(roomID);
-		if (RoomService.isRoomExist(id)) {
-			RoomService.addPeopleToRoom("YiLi", id);
+		String username = request.getParameter("username");
+		if (RoomService.isRoomExist(roomID)) {
+			RoomService.addPeopleToRoom("username", username);
 			response.getOutputStream().write(new String("Success").getBytes());
 		} else {
 			response.getOutputStream().write(

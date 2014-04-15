@@ -32,17 +32,18 @@ public class CreateRoom extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int number = new Random().nextInt(1000);
+		String roomID = Integer.toString(number);
+		String username = request.getParameter("username");
 		ArrayList<String> people = new ArrayList<String>();
-		people.add("Xincheng");
-		RoomBean rb = new RoomBean(number, 10, people);
+		people.add(username);
+		RoomBean rb = new RoomBean(roomID, 5, people);
 		try {
-			RoomService.createRoom(number, rb);
+			RoomService.createRoom(roomID, rb);
 		} catch (Exception e) {
 			response.getOutputStream().write(e.toString().getBytes());
 			return;
 		}
-		String str = number+"";
-		response.getOutputStream().write(str.getBytes());
+		response.getOutputStream().write(roomID.getBytes());
 	}
 
 	/**

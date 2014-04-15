@@ -6,9 +6,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import com.cmu.bean.RoomBean;
 
 public class RoomService {
-	private static ConcurrentHashMap<Integer, RoomBean> votingRooms = new ConcurrentHashMap<Integer, RoomBean>();
+	private static ConcurrentHashMap<String, RoomBean> votingRooms = new ConcurrentHashMap<String, RoomBean>();
 	
-	public static void createRoom(int roomID, RoomBean room){
+	public static void createRoom(String roomID, RoomBean room){
 		if(votingRooms.containsKey(roomID)){
 			throw new IllegalStateException("The room has already been created");
 		}else{
@@ -16,14 +16,14 @@ public class RoomService {
 		}
 	}
 
-	public static boolean isRoomExist(int roomID){
+	public static boolean isRoomExist(String roomID){
 		if(!votingRooms.containsKey(roomID)){
 			return false;
 		}
 		return true;
 	}
 	
-	public static void addPeopleToRoom(String people, int roomID){
+	public static void addPeopleToRoom(String people, String roomID){
 		try {
 			votingRooms.get(roomID).addPeople(people);
 		} catch (Exception e) {
@@ -31,11 +31,11 @@ public class RoomService {
 		}
 	}
 	
-	public static ArrayList<String> getPeopleInRoom(int roomID){
+	public static ArrayList<String> getPeopleInRoom(String roomID){
 		return votingRooms.get(roomID).getPeople();
 	}
 	
-	public static void closeRoom(int roomID){
+	public static void closeRoom(String roomID){
 		votingRooms.remove(roomID);
 	}
 }

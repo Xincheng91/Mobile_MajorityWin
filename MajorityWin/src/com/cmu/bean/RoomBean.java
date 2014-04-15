@@ -3,11 +3,11 @@ package com.cmu.bean;
 import java.util.ArrayList;
 
 public class RoomBean {
-	private int RoomID;
+	private String RoomID;
 	private int RoomSize;
 	private ArrayList<String> people;
 	
-	public RoomBean(int roomID, int roomSize, ArrayList<String> people) {
+	public RoomBean(String roomID, int roomSize, ArrayList<String> people) {
 		super();
 		RoomID = roomID;
 		RoomSize = roomSize;
