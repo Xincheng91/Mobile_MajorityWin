@@ -33,7 +33,7 @@ public class JoinRoom extends HttpServlet {
 		String roomID = request.getParameter("roomID");
 		String username = request.getParameter("username");
 		if (RoomService.isRoomExist(roomID)) {
-			RoomService.addPeopleToRoom("username", username);
+			RoomService.addPeopleToRoom(username, roomID);
 			response.getOutputStream().write(new String("Success").getBytes());
 		} else {
 			response.getOutputStream().write(

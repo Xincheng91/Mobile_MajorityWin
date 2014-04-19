@@ -21,11 +21,7 @@ public class RoomService {
 	}
 	
 	public static void addPeopleToRoom(String people, String roomID){
-		try {
-			votingRooms.get(roomID).addPeople(people);
-		} catch (Exception e) {
-			throw e;
-		}
+		votingRooms.get(roomID).addPeople(people);
 	}
 	
 	public static ArrayList<String> getPeopleInRoom(String roomID){
