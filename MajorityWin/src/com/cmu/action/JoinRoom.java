@@ -37,7 +37,7 @@ public class JoinRoom extends HttpServlet {
 			response.getOutputStream().write(new String("Success").getBytes());
 		} else {
 			response.getOutputStream().write(
-					new String("NotSuccess").getBytes());
+					new String().getBytes());
 		}
 	}
 

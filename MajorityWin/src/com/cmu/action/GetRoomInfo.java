@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.simple.JSONObject;
+
 import com.cmu.service.RoomService;
 
 /**
@@ -33,7 +35,7 @@ public class GetRoomInfo extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		String roomID = request.getParameter("roomID");
 		if (!RoomService.isRoomExist(roomID)) {
-			response.getOutputStream().write(new String("NotExist").getBytes());
+			response.getOutputStream().write(new String().getBytes());
 			return;
 		}
 		ArrayList<String> people = RoomService.getPeopleInRoom(roomID);
@@ -45,7 +47,13 @@ public class GetRoomInfo extends HttpServlet {
 				result = result + p + ",";
 			}
 		}
-		response.getOutputStream().write(result.getBytes());
+		int status = RoomService.getStatusOfRoom(roomID);
+		String leader = RoomService.getLeaderOfRoom(roomID);
+		JSONObject jsObject = new JSONObject();
+		jsObject.put("participants",result);
+		jsObject.put("status", status);
+		jsObject.put("leader", leader);
+		response.getOutputStream().write(jsObject.toJSONString().getBytes());
 	}
 
 	/**

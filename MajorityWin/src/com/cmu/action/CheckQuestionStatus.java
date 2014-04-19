@@ -1,8 +1,6 @@
 package com.cmu.action;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Random;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,20 +8,21 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.cmu.bean.RoomBean;
+import org.json.simple.JSONObject;
+
 import com.cmu.service.RoomService;
 
 /**
- * Servlet implementation class CreateRoom
+ * Servlet implementation class CheckQuestionStatus
  */
-@WebServlet("/CreateRoom")
-public class CreateRoom extends HttpServlet {
+@WebServlet("/CheckQuestionStatus")
+public class CheckQuestionStatus extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public CreateRoom() {
+    public CheckQuestionStatus() {
         super();
     }
 
@@ -31,17 +30,23 @@ public class CreateRoom extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		int number = new Random().nextInt(1000);
-		String roomID = Integer.toString(number);
-		String username = request.getParameter("username");
-		ArrayList<String> people = new ArrayList<String>();
-		people.add(username);
-		RoomBean rb = new RoomBean(roomID, 5, people);
-		if(RoomService.isRoomExist(roomID)){
-			response.getOutputStream().write(new String().getBytes());
-		}else{
-			RoomService.createRoom(roomID, rb);
-			response.getOutputStream().write(roomID.getBytes());
+		String roomID = request.getParameter("roomID");
+		if (RoomService.isRoomExist(roomID)) {
+			int status = RoomService.getStatusOfRoom(roomID);
+			JSONObject jsObject = new JSONObject();
+			if(status == 2){
+				jsObject.put("OK", true);
+				jsObject.put("status", status);
+				jsObject.put("questions", RoomService.getQuestions(roomID));
+			}else if(status < 2){
+				jsObject.put("OK", false);
+				jsObject.put("status", status);
+				jsObject.put("questions", "");
+			}
+			response.getOutputStream().write(jsObject.toJSONString().getBytes());
+		} else {
+			response.getOutputStream().write(
+					new String().getBytes());
 		}
 	}
 
