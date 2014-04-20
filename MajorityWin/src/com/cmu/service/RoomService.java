@@ -5,6 +5,7 @@ import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.cmu.bean.RoomBean;
+import com.cmu.bean.RoomBean.Node;
 
 public class RoomService {
 	private static ConcurrentHashMap<String, RoomBean> votingRooms = new ConcurrentHashMap<String, RoomBean>();
@@ -77,5 +78,17 @@ public class RoomService {
 
 	public static void vote(String roomID, int option) {
 		votingRooms.get(roomID).voteForOption(option);
+	}
+
+	public static int getNumOfFinishOfRoom(String roomID) {
+		return votingRooms.get(roomID).getFinished();
+	}
+
+	public static int getNumOfMajorityOfRoom(String roomID) {
+		return votingRooms.get(roomID).getMajority();
+	}
+
+	public static String getResult(String roomID) {
+		return votingRooms.get(roomID).getFinalResult();
 	}
 }

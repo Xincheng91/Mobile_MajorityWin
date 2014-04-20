@@ -67,11 +67,15 @@ public class RoomBean {
 		options.add(new Node(option3));
 	}
 	
-	private class Node{
+	public class Node{
 		String option;
 		int votedNum;
 		public Node(String option){
 			this.option = option;
+		}
+		
+		public int getVotedNum(){
+			return votedNum;
 		}
 	}
 
@@ -83,6 +87,39 @@ public class RoomBean {
 		}
 		if(total >= (people.size()/2 + 1)){
 			status = 3;
+			
 		}
+	}
+	
+	public ArrayList<Node> getOptions(){
+		return options;
+	}
+
+	public String getFinalResult() {
+		String finalResult = new String();
+		int max = 0;
+		for(int i = 0; i < options.size(); i++){
+			if(options.get(i).getVotedNum()>max){
+				max = options.get(i).getVotedNum();
+				finalResult = options.get(i).option;
+			}
+		}
+		return finalResult;
+	}
+	
+	public int getMajority() {
+		int max = 0;
+		for(int i = 0; i < options.size(); i++){
+			max=Math.max(max, options.get(i).getVotedNum());
+		}
+		return max;
+	}
+	
+	public int getFinished() {
+		int total = 0;
+		for(int i = 0; i < options.size(); i++){
+			total+=options.get(i).getVotedNum();
+		}
+		return total;
 	}
 }
