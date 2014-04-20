@@ -37,10 +37,12 @@ public class CheckQuestionStatus extends HttpServlet {
 			if(status == 2){
 				jsObject.put("OK", true);
 				jsObject.put("status", status);
+				jsObject.put("leader", RoomService.getLeaderOfRoom(roomID));
 				jsObject.put("questions", RoomService.getQuestions(roomID));
 			}else if(status < 2){
 				jsObject.put("OK", false);
 				jsObject.put("status", status);
+				jsObject.put("leader", RoomService.getLeaderOfRoom(roomID));
 				jsObject.put("questions", "");
 			}
 			response.getOutputStream().write(jsObject.toJSONString().getBytes());
