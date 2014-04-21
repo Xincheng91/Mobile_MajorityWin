@@ -5,121 +5,128 @@ import java.util.ArrayList;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
+import com.cmu.constants.Constants.RoomStatus;
+
 //we might have to provide a method to start another round, which means clear results
 public class RoomBean {
 	private String roomID;
 	private int roomSize;
-	//0:newRoom(No leader), 1:has leader(No question submit) 2:question submitted(haven't got all voting) 3: get MajorityVote or getAllVote
-	private int status;
-	private String leader;
-	private String questions;
-	private ArrayList<String> people;
-	private ArrayList<Node> options;
-	
-	public RoomBean(String roomID, int roomSize, ArrayList<String> people) {
+	private RoomStatus status;
+	private PersonBean leader;
+	private String question;
+	private ArrayList<PersonBean> people;
+	private ArrayList<Option> options;
+
+	public RoomBean(String roomID, int roomSize, ArrayList<PersonBean> people) {
 		super();
-		this.roomID = roomID;
-		this.status = 0;
+		this.setRoomID(roomID);
+		this.status = RoomStatus.NEW_ROOM;
 		this.roomSize = roomSize;
 		this.people = people;
-		//voteResult = new HashMap<String, Integer>();
+		this.options = new ArrayList<Option>();
 	}
-	
-	public void addPeople(String p){
-		if(people.size() > roomSize){
+
+	public void addPeople(PersonBean p) throws IllegalStateException {
+		if (people.size() > roomSize) {
 			throw new IllegalStateException("The room is full");
 		}
 		people.add(p);
 	}
-	
-	public ArrayList<String> getPeople(){
+
+	public ArrayList<PersonBean> getPeople() {
 		return people;
 	}
-	
-	public int getStatus(){
+
+	public RoomStatus getStatus() {
 		return status;
 	}
-	
-	public String getLeader(){
+
+	public PersonBean getLeader() {
 		return leader;
 	}
 
-	public void setStatus(int i) {
+	public void setStatus(RoomStatus i) {
 		this.status = i;
 	}
-	
-	public void setLeader(String leader){
-		this.leader  = leader;
+
+	public void setLeader(PersonBean leader) {
+		this.leader = leader;
 	}
-	
-	public String getQuestions(){
-		return questions;
+
+	public String getQuestion() {
+		return question;
 	}
 
 	public void setQuestion(String q) {
-		this.questions = q;
+		this.question = q;
 		JSONObject jsObject = (JSONObject) JSONValue.parse(q);
 		String option1 = (String) jsObject.get("option1");
 		String option2 = (String) jsObject.get("option2");
 		String option3 = (String) jsObject.get("option3");
-		options.add(new Node(option1));
-		options.add(new Node(option2));
-		options.add(new Node(option3));
-	}
-	
-	public class Node{
-		String option;
-		int votedNum;
-		public Node(String option){
-			this.option = option;
-		}
-		
-		public int getVotedNum(){
-			return votedNum;
-		}
+		options.add(new Option(option1));
+		options.add(new Option(option2));
+		options.add(new Option(option3));
 	}
 
 	public void voteForOption(int option) {
 		options.get(option).votedNum++;
-		int total = 0;
-		for(int i = 0; i < options.size(); i++){
-			total += options.get(i).votedNum;
-		}
-		if(total >= (people.size()/2 + 1)){
-			status = 3;
-			
+		if (getFinished() >= people.size()
+				|| getMajority() > (people.size() / 2)) {
+			status = RoomStatus.VOTED;
 		}
 	}
-	
-	public ArrayList<Node> getOptions(){
+
+	public ArrayList<Option> getOptions() {
 		return options;
 	}
 
 	public String getFinalResult() {
 		String finalResult = new String();
 		int max = 0;
-		for(int i = 0; i < options.size(); i++){
-			if(options.get(i).getVotedNum()>max){
+		for (int i = 0; i < options.size(); i++) {
+			if (options.get(i).getVotedNum() > max) {
 				max = options.get(i).getVotedNum();
 				finalResult = options.get(i).option;
 			}
 		}
 		return finalResult;
 	}
-	
+
 	public int getMajority() {
 		int max = 0;
-		for(int i = 0; i < options.size(); i++){
-			max=Math.max(max, options.get(i).getVotedNum());
+		for (int i = 0; i < options.size(); i++) {
+			max = Math.max(max, options.get(i).getVotedNum());
 		}
 		return max;
 	}
-	
+
 	public int getFinished() {
 		int total = 0;
-		for(int i = 0; i < options.size(); i++){
-			total+=options.get(i).getVotedNum();
+		for (int i = 0; i < options.size(); i++) {
+			total += options.get(i).getVotedNum();
 		}
 		return total;
+	}
+
+	public String getRoomID() {
+		return roomID;
+	}
+
+	public void setRoomID(String roomID) {
+		this.roomID = roomID;
+	}
+
+	public class Option {
+		String option;
+		int votedNum;
+
+		public Option(String option) {
+			this.option = option;
+			this.votedNum = 0;
+		}
+
+		public int getVotedNum() {
+			return votedNum;
+		}
 	}
 }

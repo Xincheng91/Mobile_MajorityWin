@@ -16,34 +16,36 @@ import com.cmu.service.RoomService;
 @WebServlet("/SubmitVote")
 public class SubmitVote extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public SubmitVote() {
-        super();
-    }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public SubmitVote() {
+		super();
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
 		String roomID = request.getParameter("roomID");
-		String username = request.getParameter("username");
 		int option = Integer.parseInt(request.getParameter("option"));
 		if (RoomService.isRoomExist(roomID)) {
 			RoomService.vote(roomID, option);
 			response.getOutputStream().write(new String("Success").getBytes());
 		} else {
-			response.getOutputStream().write(
-					new String().getBytes());
+			response.getOutputStream().write(new String().getBytes());
 		}
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
 		this.doGet(request, response);
 	}
 

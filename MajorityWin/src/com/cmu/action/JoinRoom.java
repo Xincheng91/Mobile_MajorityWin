@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.cmu.bean.PersonBean;
 import com.cmu.service.RoomService;
 
 /**
@@ -33,11 +34,16 @@ public class JoinRoom extends HttpServlet {
 		String roomID = request.getParameter("roomID");
 		String username = request.getParameter("username");
 		if (RoomService.isRoomExist(roomID)) {
-			RoomService.addPeopleToRoom(username, roomID);
-			response.getOutputStream().write(new String("Success").getBytes());
+			try {
+				PersonBean pb = RoomService.getPerson(username);
+				RoomService.addPeopleToRoom(pb, roomID);
+				response.getOutputStream().write(
+						new String("Success").getBytes());
+			} catch (Exception e) {
+				response.getOutputStream().write(new String().getBytes());
+			}
 		} else {
-			response.getOutputStream().write(
-					new String().getBytes());
+			response.getOutputStream().write(new String().getBytes());
 		}
 	}
 

@@ -11,16 +11,16 @@ import javax.servlet.http.HttpServletResponse;
 import com.cmu.service.RoomService;
 
 /**
- * Servlet implementation class PickLeader
+ * Servlet implementation class Login
  */
-@WebServlet("/PickLeader")
-public class PickLeader extends HttpServlet {
+@WebServlet("/Login")
+public class Login extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public PickLeader() {
+	public Login() {
 		super();
 	}
 
@@ -30,13 +30,7 @@ public class PickLeader extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		String roomID = request.getParameter("roomID");
-		if (RoomService.isRoomExist(roomID)) {
-			RoomService.randomPickLeader(roomID);
-			response.getOutputStream().write(new String("Success").getBytes());
-		} else {
-			response.getOutputStream().write(new String().getBytes());
-		}
+		this.doPost(request, response);
 	}
 
 	/**
@@ -45,7 +39,13 @@ public class PickLeader extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		this.doGet(request, response);
+		String username = request.getParameter("username");
+		String password = request.getParameter("password");
+		if (RoomService.login(username, password)) {
+			response.getOutputStream().write("OK".getBytes());
+		} else {
+			response.getOutputStream().write("".getBytes());
+		}
+		return;
 	}
-
 }

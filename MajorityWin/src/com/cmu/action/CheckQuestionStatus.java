@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.simple.JSONObject;
 
+import com.cmu.constants.Constants.RoomStatus;
 import com.cmu.service.RoomService;
 
 /**
@@ -18,44 +19,50 @@ import com.cmu.service.RoomService;
 @WebServlet("/CheckQuestionStatus")
 public class CheckQuestionStatus extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public CheckQuestionStatus() {
-        super();
-    }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public CheckQuestionStatus() {
+		super();
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
 		String roomID = request.getParameter("roomID");
 		if (RoomService.isRoomExist(roomID)) {
-			int status = RoomService.getStatusOfRoom(roomID);
+			RoomStatus status = RoomService.getStatusOfRoom(roomID);
 			JSONObject jsObject = new JSONObject();
-			if(status == 2){
+			if (status == RoomStatus.QUESTION_SUBMITTED) {
 				jsObject.put("OK", true);
-				jsObject.put("status", status);
-				jsObject.put("leader", RoomService.getLeaderOfRoom(roomID));
+				jsObject.put("status", status.ordinal());
+				jsObject.put("leader", RoomService.getLeaderOfRoom(roomID)
+						.getUsername());
 				jsObject.put("questions", RoomService.getQuestions(roomID));
-			}else if(status < 2){
+			} else {
 				jsObject.put("OK", false);
-				jsObject.put("status", status);
-				jsObject.put("leader", RoomService.getLeaderOfRoom(roomID));
+				jsObject.put("status", status.ordinal());
+				jsObject.put("leader", RoomService.getLeaderOfRoom(roomID)
+						.getUsername());
 				jsObject.put("questions", "");
 			}
-			response.getOutputStream().write(jsObject.toJSONString().getBytes());
+			response.getOutputStream()
+					.write(jsObject.toJSONString().getBytes());
 		} else {
-			response.getOutputStream().write(
-					new String().getBytes());
+			response.getOutputStream().write(new String().getBytes());
 		}
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
 		this.doGet(request, response);
 	}
 

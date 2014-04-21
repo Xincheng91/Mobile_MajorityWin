@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.simple.JSONObject;
 
+import com.cmu.bean.PersonBean;
+import com.cmu.constants.Constants.RoomStatus;
 import com.cmu.service.RoomService;
 
 /**
@@ -38,21 +40,21 @@ public class GetRoomInfo extends HttpServlet {
 			response.getOutputStream().write(new String().getBytes());
 			return;
 		}
-		ArrayList<String> people = RoomService.getPeopleInRoom(roomID);
+		ArrayList<PersonBean> people = RoomService.getPeopleInRoom(roomID);
 		String result = new String();
 		if (people.size() == 1) {
-			result = people.get(0);
+			result = people.get(0).getUsername();
 		} else if (people.size() > 1) {
-			for (String p : people) {
-				result = result + p + ",";
+			for (PersonBean p : people) {
+				result = result + p.getUsername() + ",";
 			}
 		}
-		int status = RoomService.getStatusOfRoom(roomID);
-		String leader = RoomService.getLeaderOfRoom(roomID);
+		RoomStatus status = RoomService.getStatusOfRoom(roomID);
+		PersonBean leader = RoomService.getLeaderOfRoom(roomID);
 		JSONObject jsObject = new JSONObject();
-		jsObject.put("participants",result);
-		jsObject.put("status", status);
-		jsObject.put("leader", leader);
+		jsObject.put("participants", result);
+		jsObject.put("status", status.ordinal());
+		jsObject.put("leader", leader == null ? null : leader.getUsername());
 		response.getOutputStream().write(jsObject.toJSONString().getBytes());
 	}
 

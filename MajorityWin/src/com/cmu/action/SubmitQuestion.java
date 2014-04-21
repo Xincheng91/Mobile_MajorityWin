@@ -8,19 +8,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.cmu.constants.Constants.RoomStatus;
 import com.cmu.service.RoomService;
 
 /**
- * Servlet implementation class PickLeader
+ * Servlet implementation class SubmitQuestions
  */
-@WebServlet("/PickLeader")
-public class PickLeader extends HttpServlet {
+@WebServlet("/SubmitQuestion")
+public class SubmitQuestion extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public PickLeader() {
+	public SubmitQuestion() {
 		super();
 	}
 
@@ -30,13 +31,7 @@ public class PickLeader extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		String roomID = request.getParameter("roomID");
-		if (RoomService.isRoomExist(roomID)) {
-			RoomService.randomPickLeader(roomID);
-			response.getOutputStream().write(new String("Success").getBytes());
-		} else {
-			response.getOutputStream().write(new String().getBytes());
-		}
+		this.doPost(request, response);
 	}
 
 	/**
@@ -45,7 +40,16 @@ public class PickLeader extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		this.doGet(request, response);
+		String roomID = request.getParameter("roomID");
+		String question = request.getParameter("question");
+		System.out.println("SubmitQuestion: " + roomID + " " + question);
+		if (RoomService.isRoomExist(roomID)) {
+			RoomService.setQuestion(roomID, question);
+			RoomService.setStatus(roomID, RoomStatus.QUESTION_SUBMITTED);
+			response.getOutputStream().write(new String("Success").getBytes());
+		} else {
+			response.getOutputStream().write(new String().getBytes());
+		}
 	}
 
 }
