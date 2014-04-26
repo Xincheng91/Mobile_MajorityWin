@@ -32,6 +32,7 @@ public class PickLeader extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		String roomID = request.getParameter("roomID");
 		if (RoomService.isRoomExist(roomID)) {
+			RoomService.setRoomSize(roomID);
 			RoomService.randomPickLeader(roomID);
 			response.getOutputStream().write(new String("Success").getBytes());
 		} else {

@@ -32,6 +32,7 @@ public class SubmitVote extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		String roomID = request.getParameter("roomID");
 		int option = Integer.parseInt(request.getParameter("option"));
+		System.out.println("SubmitVote: " + option);
 		if (RoomService.isRoomExist(roomID)) {
 			RoomService.vote(roomID, option);
 			response.getOutputStream().write(new String("Success").getBytes());

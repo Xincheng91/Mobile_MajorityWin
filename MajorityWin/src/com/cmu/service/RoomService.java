@@ -27,6 +27,7 @@ public class RoomService {
 		}
 		PersonBean pb = new PersonBean(username, password);
 		users.put(username, pb);
+		System.out.println("Register: " + users);
 		return true;
 	}
 
@@ -70,6 +71,14 @@ public class RoomService {
 		return votingRooms.get(roomID).getStatus();
 	}
 
+	public static int getRoomSize(String roomID) {
+		return votingRooms.get(roomID).getRoomSize();
+	}
+
+	public static void setRoomSize(String roomID) {
+		votingRooms.get(roomID).setRoomSize();
+	}
+
 	public static PersonBean getLeaderOfRoom(String roomID) {
 		return votingRooms.get(roomID).getLeader();
 	}
@@ -83,6 +92,7 @@ public class RoomService {
 		int rand = new Random().nextInt(people.size());
 		votingRooms.get(roomID).setStatus(RoomStatus.LEADER_CHOSEN);
 		votingRooms.get(roomID).setLeader(people.get(rand));
+		System.out.println(people.get(rand).getUsername());
 	}
 
 	public static PersonBean changeLeader(String roomID,
@@ -126,7 +136,7 @@ public class RoomService {
 		return votingRooms.get(roomID).getMajority();
 	}
 
-	public static String getResult(String roomID) {
+	public static ArrayList<String> getResult(String roomID) {
 		return votingRooms.get(roomID).getFinalResult();
 	}
 }

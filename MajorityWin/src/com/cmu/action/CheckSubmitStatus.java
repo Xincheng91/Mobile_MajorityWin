@@ -1,6 +1,7 @@
 package com.cmu.action;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -43,11 +44,18 @@ public class CheckSubmitStatus extends HttpServlet {
 				jsObject.put("numOfFinished", numOfFinished);
 				jsObject.put("numOfMajority", numOfMajority);
 				jsObject.put("status", status.ordinal());
-				jsObject.put("result", RoomService.getResult(roomID));
+				jsObject.put("roomSize", RoomService.getRoomSize(roomID));
+				ArrayList<String> resultArr = RoomService.getResult(roomID);
+				String resultStr = resultArr.get(0);
+				for (int i = 1; i < resultArr.size(); i++) {
+					resultStr += "or " + resultArr.get(i);
+				}
+				jsObject.put("result", resultStr);
 			} else {
 				jsObject.put("numOfFinished", numOfFinished);
 				jsObject.put("numOfMajority", numOfMajority);
 				jsObject.put("status", status.ordinal());
+				jsObject.put("roomSize", RoomService.getRoomSize(roomID));
 				jsObject.put("result", "");
 			}
 			response.getOutputStream()

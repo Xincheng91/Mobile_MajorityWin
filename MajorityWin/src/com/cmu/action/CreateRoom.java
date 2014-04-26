@@ -50,14 +50,14 @@ public class CreateRoom extends HttpServlet {
 			roomID = Integer.toString(number);
 		}
 
-		String username = request.getParameter("username");
+		// String username = request.getParameter("username");
 		ArrayList<PersonBean> people = new ArrayList<PersonBean>();
-		try {
-			people.add(RoomService.getPerson(username));
-		} catch (Exception e) {
-			response.getOutputStream().write("".getBytes());
-			return;
-		}
+		// try {
+		// people.add(RoomService.getPerson(username));
+		// } catch (Exception e) {
+		// response.getOutputStream().write("".getBytes());
+		// return;
+		// }
 		RoomBean rb = new RoomBean(roomID, roomSize, people);
 		RoomService.createRoom(roomID, rb);
 		response.getOutputStream().write(roomID.getBytes());

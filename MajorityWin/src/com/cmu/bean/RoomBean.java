@@ -37,6 +37,14 @@ public class RoomBean {
 		return people;
 	}
 
+	public int getRoomSize() {
+		return roomSize;
+	}
+
+	public void setRoomSize() {
+		roomSize = people.size();
+	}
+
 	public RoomStatus getStatus() {
 		return status;
 	}
@@ -60,15 +68,15 @@ public class RoomBean {
 	public void setQuestion(String q) {
 		this.question = q;
 		JSONObject jsObject = (JSONObject) JSONValue.parse(q);
-		String option1 = (String) jsObject.get("option1");
-		String option2 = (String) jsObject.get("option2");
-		String option3 = (String) jsObject.get("option3");
-		options.add(new Option(option1));
-		options.add(new Option(option2));
-		options.add(new Option(option3));
+		int optionNum = jsObject.size() - 1;
+		for (int i = 0; i < optionNum; i++) {
+			String option = "option" + i;
+			options.add(new Option((String) jsObject.get(option)));
+		}
 	}
 
 	public void voteForOption(int option) {
+		System.out.println("voteForOption: " + option);
 		options.get(option).votedNum++;
 		if (getFinished() >= people.size()
 				|| getMajority() > (people.size() / 2)) {
@@ -80,13 +88,12 @@ public class RoomBean {
 		return options;
 	}
 
-	public String getFinalResult() {
-		String finalResult = new String();
-		int max = 0;
+	public ArrayList<String> getFinalResult() {
+		ArrayList<String> finalResult = new ArrayList<String>();
+		int majority = getMajority();
 		for (int i = 0; i < options.size(); i++) {
-			if (options.get(i).getVotedNum() > max) {
-				max = options.get(i).getVotedNum();
-				finalResult = options.get(i).option;
+			if (options.get(i).getVotedNum() == majority) {
+				finalResult.add(options.get(i).option);
 			}
 		}
 		return finalResult;
