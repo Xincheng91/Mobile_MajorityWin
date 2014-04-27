@@ -34,7 +34,7 @@ public class PickLeader extends HttpServlet {
 		if (RoomService.isRoomExist(roomID)) {
 			RoomService.setRoomSize(roomID);
 			RoomService.randomPickLeader(roomID);
-			response.getOutputStream().write(new String("Success").getBytes());
+			response.getOutputStream().write(new String("OK").getBytes());
 		} else {
 			response.getOutputStream().write(new String().getBytes());
 		}

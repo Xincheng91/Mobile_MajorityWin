@@ -8,26 +8,18 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.cmu.bean.PersonBean;
 import com.cmu.service.RoomService;
 
-/**
- * Servlet implementation class CreateRoom
- */
-@WebServlet("/CreateRoom")
-public class CreateRoom extends HttpServlet {
+@WebServlet("/StartNewRound")
+public class StartNewRound extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public CreateRoom() {
+	public StartNewRound() {
 		super();
-		// store some users
-		RoomService.register("Peter", "Peter");
-		RoomService.register("Alex", "Alex");
-		RoomService.register("Tom", "Tom");
-		RoomService.register("Katie", "Katie");
-		RoomService.register("Sara", "Sara");
 	}
 
 	/**
@@ -36,9 +28,18 @@ public class CreateRoom extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		int roomSize = Integer.parseInt(request.getParameter("roomsize"));
-		String roomID = RoomService.createRoom(roomSize);
-		response.getOutputStream().write(roomID.getBytes());
+		String username = request.getParameter("username");
+		String roomID = request.getParameter("roomID");
+		try {
+			PersonBean pb = RoomService.getPerson(username);
+			if (RoomService.startNewRound(pb, roomID)) {
+				response.getOutputStream().write("OK".getBytes());
+			} else {
+				response.getOutputStream().write("".getBytes());
+			}
+		} catch (Exception e) {
+			response.getOutputStream().write("".getBytes());
+		}
 		return;
 	}
 
@@ -50,5 +51,4 @@ public class CreateRoom extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		this.doGet(request, response);
 	}
-
 }

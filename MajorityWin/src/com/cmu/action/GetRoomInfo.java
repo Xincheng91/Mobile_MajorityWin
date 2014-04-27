@@ -50,6 +50,7 @@ public class GetRoomInfo extends HttpServlet {
 			}
 		}
 		RoomStatus status = RoomService.getStatusOfRoom(roomID);
+		System.out.println("GetRoomInfo: " + status + " " + status.ordinal());
 		PersonBean leader = RoomService.getLeaderOfRoom(roomID);
 		JSONObject jsObject = new JSONObject();
 		jsObject.put("participants", result);

@@ -6,6 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import com.cmu.bean.PersonBean;
 import com.cmu.bean.RoomBean;
+import com.cmu.constants.Constants;
 import com.cmu.constants.Constants.RoomStatus;
 
 public class RoomService {
@@ -40,8 +41,15 @@ public class RoomService {
 		}
 	}
 
-	public static void createRoom(String roomID, RoomBean room) {
-		votingRooms.put(roomID, room);
+	public static String createRoom(int roomSize) {
+		int roomID = new Random().nextInt(Constants.roomNumberRand);
+		while (votingRooms.containsKey(String.valueOf(roomID))) {
+			roomID = new Random().nextInt(Constants.roomNumberRand);
+		}
+		String roomIDStr = String.valueOf(roomID);
+		votingRooms.put(roomIDStr, new RoomBean(roomIDStr, roomSize));
+		System.out.println("createRoom: " + roomID);
+		return roomIDStr;
 	}
 
 	public static boolean isRoomExist(String roomID) {
@@ -92,7 +100,8 @@ public class RoomService {
 		int rand = new Random().nextInt(people.size());
 		votingRooms.get(roomID).setStatus(RoomStatus.LEADER_CHOSEN);
 		votingRooms.get(roomID).setLeader(people.get(rand));
-		System.out.println(people.get(rand).getUsername());
+		System.out.println("randomPickLeader: "
+				+ people.get(rand).getUsername());
 	}
 
 	public static PersonBean changeLeader(String roomID,
@@ -109,6 +118,7 @@ public class RoomService {
 				break;
 			}
 		}
+		System.out.println("changeLeader: " + people.get(num).getUsername());
 		return people.get(num);
 	}
 
@@ -138,5 +148,21 @@ public class RoomService {
 
 	public static ArrayList<String> getResult(String roomID) {
 		return votingRooms.get(roomID).getFinalResult();
+	}
+
+	public static boolean startNewRound(PersonBean person, String roomID) {
+		if (votingRooms.containsKey(roomID)) {
+			return votingRooms.get(roomID).startNewRound(person);
+		} else {
+			return false;
+		}
+	}
+
+	public static boolean exitRoom(PersonBean person, String roomID) {
+		if (votingRooms.containsKey(roomID)) {
+			return votingRooms.get(roomID).exitRoom(person);
+		} else {
+			return false;
+		}
 	}
 }

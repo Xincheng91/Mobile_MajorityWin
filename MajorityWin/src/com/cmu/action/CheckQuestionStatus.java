@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 
 import com.cmu.constants.Constants.RoomStatus;
 import com.cmu.service.RoomService;
@@ -42,7 +43,9 @@ public class CheckQuestionStatus extends HttpServlet {
 				jsObject.put("status", status.ordinal());
 				jsObject.put("leader", RoomService.getLeaderOfRoom(roomID)
 						.getUsername());
-				jsObject.put("questions", RoomService.getQuestions(roomID));
+				JSONObject questionsJson = (JSONObject) JSONValue
+						.parse(RoomService.getQuestions(roomID));
+				jsObject.put("questions", questionsJson);
 			} else {
 				jsObject.put("OK", false);
 				jsObject.put("status", status.ordinal());
@@ -50,6 +53,8 @@ public class CheckQuestionStatus extends HttpServlet {
 						.getUsername());
 				jsObject.put("questions", "");
 			}
+			System.out.println("CheckQuestionStatus: "
+					+ jsObject.toJSONString());
 			response.getOutputStream()
 					.write(jsObject.toJSONString().getBytes());
 		} else {

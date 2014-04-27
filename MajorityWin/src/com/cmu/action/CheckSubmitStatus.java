@@ -48,7 +48,7 @@ public class CheckSubmitStatus extends HttpServlet {
 				ArrayList<String> resultArr = RoomService.getResult(roomID);
 				String resultStr = resultArr.get(0);
 				for (int i = 1; i < resultArr.size(); i++) {
-					resultStr += "or " + resultArr.get(i);
+					resultStr += " or " + resultArr.get(i);
 				}
 				jsObject.put("result", resultStr);
 			} else {
@@ -58,6 +58,7 @@ public class CheckSubmitStatus extends HttpServlet {
 				jsObject.put("roomSize", RoomService.getRoomSize(roomID));
 				jsObject.put("result", "");
 			}
+			System.out.println("CheckSubmitStatus: " + jsObject.toJSONString());
 			response.getOutputStream()
 					.write(jsObject.toJSONString().getBytes());
 		} else {

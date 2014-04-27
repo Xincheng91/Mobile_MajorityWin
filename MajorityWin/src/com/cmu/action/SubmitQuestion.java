@@ -46,7 +46,7 @@ public class SubmitQuestion extends HttpServlet {
 		if (RoomService.isRoomExist(roomID)) {
 			RoomService.setQuestion(roomID, question);
 			RoomService.setStatus(roomID, RoomStatus.QUESTION_SUBMITTED);
-			response.getOutputStream().write(new String("Success").getBytes());
+			response.getOutputStream().write(new String("OK").getBytes());
 		} else {
 			response.getOutputStream().write(new String().getBytes());
 		}

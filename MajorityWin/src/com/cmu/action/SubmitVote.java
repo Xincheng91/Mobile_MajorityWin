@@ -35,7 +35,7 @@ public class SubmitVote extends HttpServlet {
 		System.out.println("SubmitVote: " + option);
 		if (RoomService.isRoomExist(roomID)) {
 			RoomService.vote(roomID, option);
-			response.getOutputStream().write(new String("Success").getBytes());
+			response.getOutputStream().write(new String("OK").getBytes());
 		} else {
 			response.getOutputStream().write(new String().getBytes());
 		}

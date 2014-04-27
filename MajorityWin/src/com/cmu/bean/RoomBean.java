@@ -17,12 +17,12 @@ public class RoomBean {
 	private ArrayList<PersonBean> people;
 	private ArrayList<Option> options;
 
-	public RoomBean(String roomID, int roomSize, ArrayList<PersonBean> people) {
+	public RoomBean(String roomID, int roomSize) {
 		super();
 		this.setRoomID(roomID);
 		this.status = RoomStatus.NEW_ROOM;
 		this.roomSize = roomSize;
-		this.people = people;
+		this.people = new ArrayList<PersonBean>();
 		this.options = new ArrayList<Option>();
 	}
 
@@ -30,7 +30,9 @@ public class RoomBean {
 		if (people.size() > roomSize) {
 			throw new IllegalStateException("The room is full");
 		}
-		people.add(p);
+		if (!this.people.contains(p)) {
+			people.add(p);
+		}
 	}
 
 	public ArrayList<PersonBean> getPeople() {
@@ -62,6 +64,7 @@ public class RoomBean {
 	}
 
 	public String getQuestion() {
+		System.out.println("GetQuestion: " + question);
 		return question;
 	}
 
@@ -121,6 +124,25 @@ public class RoomBean {
 
 	public void setRoomID(String roomID) {
 		this.roomID = roomID;
+	}
+
+	public boolean startNewRound(PersonBean person) {
+		if (this.status != RoomStatus.NEW_ROOM) {
+			this.status = RoomStatus.NEW_ROOM;
+			this.leader = null;
+			this.question = null;
+			this.options.clear();
+			this.people.clear();
+			this.people.add(person);
+		} else {
+			this.people.add(person);
+		}
+		return true;
+	}
+
+	public boolean exitRoom(PersonBean person) {
+		this.people.remove(person);
+		return true;
 	}
 
 	public class Option {

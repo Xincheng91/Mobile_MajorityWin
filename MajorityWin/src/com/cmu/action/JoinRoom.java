@@ -37,8 +37,7 @@ public class JoinRoom extends HttpServlet {
 			try {
 				PersonBean pb = RoomService.getPerson(username);
 				RoomService.addPeopleToRoom(pb, roomID);
-				response.getOutputStream().write(
-						new String("Success").getBytes());
+				response.getOutputStream().write(new String("OK").getBytes());
 			} catch (Exception e) {
 				response.getOutputStream().write(new String().getBytes());
 			}
