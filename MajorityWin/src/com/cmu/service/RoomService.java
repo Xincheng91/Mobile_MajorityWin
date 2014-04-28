@@ -118,6 +118,7 @@ public class RoomService {
 				break;
 			}
 		}
+		votingRooms.get(roomID).setLeader(people.get(num));
 		System.out.println("changeLeader: " + people.get(num).getUsername());
 		return people.get(num);
 	}
