@@ -16,6 +16,7 @@ public class RoomBean {
 	private String question;
 	private ArrayList<PersonBean> people;
 	private ArrayList<Option> options;
+	private long startVoteTime;
 
 	public RoomBean(String roomID, int roomSize) {
 		super();
@@ -48,6 +49,12 @@ public class RoomBean {
 	}
 
 	public RoomStatus getStatus() {
+		if (this.status == RoomStatus.QUESTION_SUBMITTED) {
+			long currentVoteTime = System.currentTimeMillis() / 1000;
+			if (currentVoteTime - this.startVoteTime > 120) {
+				this.status = RoomStatus.VOTED;
+			}
+		}
 		return status;
 	}
 
@@ -76,6 +83,7 @@ public class RoomBean {
 			String option = "option" + i;
 			options.add(new Option((String) jsObject.get(option)));
 		}
+		this.startVoteTime = System.currentTimeMillis() / 1000;
 	}
 
 	public void voteForOption(int option) {
@@ -134,6 +142,7 @@ public class RoomBean {
 			this.options.clear();
 			this.people.clear();
 			this.people.add(person);
+			this.startVoteTime = System.currentTimeMillis() / 1000;
 		} else {
 			this.people.add(person);
 		}
@@ -143,6 +152,14 @@ public class RoomBean {
 	public boolean exitRoom(PersonBean person) {
 		this.people.remove(person);
 		return true;
+	}
+
+	public long getStartVoteTime() {
+		return startVoteTime;
+	}
+
+	public void setStartVoteTime(long startVoteTime) {
+		this.startVoteTime = startVoteTime;
 	}
 
 	public class Option {

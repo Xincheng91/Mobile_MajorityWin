@@ -151,6 +151,10 @@ public class RoomService {
 		return votingRooms.get(roomID).getFinalResult();
 	}
 
+	public static long getStartVoteTime(String roomID) {
+		return votingRooms.get(roomID).getStartVoteTime();
+	}
+
 	public static boolean startNewRound(PersonBean person, String roomID) {
 		if (votingRooms.containsKey(roomID)) {
 			return votingRooms.get(roomID).startNewRound(person);
