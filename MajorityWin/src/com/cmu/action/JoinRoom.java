@@ -14,7 +14,7 @@ import com.cmu.service.RoomService;
 /**
  * Servlet implementation class JoinRoom
  */
-@WebServlet("/JoinRoom")
+//@WebServlet("/JoinRoom")
 public class JoinRoom extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 

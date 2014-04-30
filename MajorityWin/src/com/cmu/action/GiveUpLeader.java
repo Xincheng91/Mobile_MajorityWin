@@ -14,7 +14,7 @@ import com.cmu.service.RoomService;
 /**
  * Servlet implementation class GiveUpLeader
  */
-@WebServlet("/GiveUpLeader")
+//@WebServlet("/GiveUpLeader")
 public class GiveUpLeader extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 

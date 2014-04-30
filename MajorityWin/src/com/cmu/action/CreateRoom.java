@@ -13,7 +13,7 @@ import com.cmu.service.RoomService;
 /**
  * Servlet implementation class CreateRoom
  */
-@WebServlet("/CreateRoom")
+//@WebServlet("/CreateRoom")
 public class CreateRoom extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 

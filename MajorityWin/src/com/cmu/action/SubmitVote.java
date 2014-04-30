@@ -13,7 +13,7 @@ import com.cmu.service.RoomService;
 /**
  * Servlet implementation class SubmitVote
  */
-@WebServlet("/SubmitVote")
+//@WebServlet("/SubmitVote")
 public class SubmitVote extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 

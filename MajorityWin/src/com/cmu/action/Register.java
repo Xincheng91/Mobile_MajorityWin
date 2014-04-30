@@ -13,7 +13,7 @@ import com.cmu.service.RoomService;
 /**
  * Servlet implementation class Login
  */
-@WebServlet("/Register")
+//@WebServlet("/Register")
 public class Register extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 

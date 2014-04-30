@@ -13,7 +13,7 @@ import com.cmu.service.RoomService;
 /**
  * Servlet implementation class PickLeader
  */
-@WebServlet("/PickLeader")
+//@WebServlet("/PickLeader")
 public class PickLeader extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 

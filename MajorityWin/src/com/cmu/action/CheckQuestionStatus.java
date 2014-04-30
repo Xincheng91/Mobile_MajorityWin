@@ -17,7 +17,7 @@ import com.cmu.service.RoomService;
 /**
  * Servlet implementation class CheckQuestionStatus
  */
-@WebServlet("/CheckQuestionStatus")
+//@WebServlet("/CheckQuestionStatus")
 public class CheckQuestionStatus extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 

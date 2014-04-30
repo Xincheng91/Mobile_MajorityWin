@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.cmu.bean.PersonBean;
 import com.cmu.service.RoomService;
 
-@WebServlet("/ExitRoom")
+//@WebServlet("/ExitRoom")
 public class ExitRoom extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 

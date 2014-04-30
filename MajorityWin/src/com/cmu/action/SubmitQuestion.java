@@ -14,7 +14,7 @@ import com.cmu.service.RoomService;
 /**
  * Servlet implementation class SubmitQuestions
  */
-@WebServlet("/SubmitQuestion")
+//@WebServlet("/SubmitQuestion")
 public class SubmitQuestion extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 

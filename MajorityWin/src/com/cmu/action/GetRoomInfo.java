@@ -18,7 +18,7 @@ import com.cmu.service.RoomService;
 /**
  * Servlet implementation class GetRoomInfo
  */
-@WebServlet("/GetRoomInfo")
+//@WebServlet("/GetRoomInfo")
 public class GetRoomInfo extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
